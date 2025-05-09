@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';  // Correct way to import Nodemailer
+import * as nodemailer from 'nodemailer';  
+import { CreateContactDto } from 'src/contact/dto/submitForm.dto';
+
 
 
 @Injectable()
@@ -26,6 +28,31 @@ export class EmailService {
 
     return this.transporter.sendMail(mailOptions);
   }
-}
+
+  async sendSellerNotification(contact : CreateContactDto ):Promise<void>{
+
+    const mailOptions= {
+      from : contact.email,
+      to:process.env.EMAIL_USER,
+      subject: `New Contact Form Message from ${contact.name}`,
+      replyTo: contact.email,
+      text: `
+      you recieved a new message
+       from: ${contact.name} <${contact.email}>
+      message: ${contact.message}`,
+
+    };
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+      console.log('Seller notification sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw new Error('Failed to send message');
+    }
+  }
+
+  }
+
 
 
