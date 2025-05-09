@@ -16,11 +16,13 @@ import { EmailService } from './emailConfirmation/email.service';
 import { ConfigModule } from '@nestjs/config';
 import { SubscriptionService } from './subscription/subscription.service';
 import { SubscriptionModule } from './subscription/subscription.module';
+import { Subscription, SubscriptionSchema } from './schemas/subscribtion.Schema';
 
 @Module({
   imports: [ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
   MongooseModule.forFeature([{ name: Cart.name, schema: CartSchema }]),
+  MongooseModule.forFeature([{name: Subscription.name, schema: SubscriptionSchema}]),
   MongooseModule.forRoot('mongodb://localhost:27017/IslandZ'), ProductModule, 
   ContactModule, CartModule, CheckoutModule, SubscriptionModule
   ],
